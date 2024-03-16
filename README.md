@@ -1,8 +1,8 @@
 # controltower-account-factory-for-cdktf
 
-This repo demonstrates how it is possible to provision new accounts in Control Tower using IaC by provisioning the AWS Service Catalog Product in Terraform/CDKTF. This is how Control Tower provisions a new account when done manually from the Console.
+This repo demonstrates how it is possible to provision new accounts in Control Tower using IaC by using the AWS Service Catalog Product in Terraform/CDKTF. This is how Control Tower provisions a new account when done manually from the Console.
 
-Take a look in the `stacks/` directory and `main.ts`.
+Take a look in the `stacks/` directory, particularly for `ControlTower.ts`. The two stacks `OrganizationsManagement` and `ControlTower` are called from `main.ts`.
 
 ## Please note
 
