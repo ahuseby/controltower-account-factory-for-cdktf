@@ -1,0 +1,152 @@
+{
+  "//": {
+    "metadata": {
+      "backend": "local",
+      "stackName": "ct",
+      "version": "0.20.4"
+    },
+    "outputs": {
+    }
+  },
+  "data": {
+    "aws_caller_identity": {
+      "current_caller_identity": {
+        "//": {
+          "metadata": {
+            "path": "ct/current_caller_identity",
+            "uniqueId": "current_caller_identity"
+          }
+        }
+      }
+    },
+    "aws_servicecatalog_launch_paths": {
+      "launch_paths": {
+        "//": {
+          "metadata": {
+            "path": "ct/launch_paths",
+            "uniqueId": "launch_paths"
+          }
+        },
+        "product_id": "${data.aws_servicecatalog_product.sc_product.id}"
+      }
+    },
+    "aws_servicecatalog_portfolio": {
+      "portfolio": {
+        "//": {
+          "metadata": {
+            "path": "ct/portfolio",
+            "uniqueId": "portfolio"
+          }
+        },
+        "id": "port-xyz"
+      }
+    },
+    "aws_servicecatalog_product": {
+      "sc_product": {
+        "//": {
+          "metadata": {
+            "path": "ct/sc_product",
+            "uniqueId": "sc_product"
+          }
+        },
+        "depends_on": [
+          "aws_servicecatalog_principal_portfolio_association.portfolio_access"
+        ],
+        "id": "prod-xyz"
+      }
+    },
+    "aws_servicecatalog_provisioning_artifacts": {
+      "sc_product_artifacts": {
+        "//": {
+          "metadata": {
+            "path": "ct/sc_product_artifacts",
+            "uniqueId": "sc_product_artifacts"
+          }
+        },
+        "product_id": "${data.aws_servicecatalog_product.sc_product.id}"
+      }
+    },
+    "terraform_remote_state": {
+      "cross-stack-reference-input-org_mgmt": {
+        "backend": "local",
+        "config": {
+          "path": "/Users/audunhu/git/controltower-account-factory-for-cdktf/terraform.org_mgmt.tfstate"
+        },
+        "workspace": "${terraform.workspace}"
+      }
+    }
+  },
+  "provider": {
+    "aws": [
+      {
+      }
+    ]
+  },
+  "resource": {
+    "aws_servicecatalog_principal_portfolio_association": {
+      "portfolio_access": {
+        "//": {
+          "metadata": {
+            "path": "ct/portfolio_access",
+            "uniqueId": "portfolio_access"
+          }
+        },
+        "portfolio_id": "${data.aws_servicecatalog_portfolio.portfolio.id}",
+        "principal_arn": "${data.aws_caller_identity.current_caller_identity.arn}"
+      }
+    },
+    "aws_servicecatalog_provisioned_product": {
+      "demo_account": {
+        "//": {
+          "metadata": {
+            "path": "ct/demo_account",
+            "uniqueId": "demo_account"
+          }
+        },
+        "name": "Demo-Account",
+        "path_id": "${data.aws_servicecatalog_launch_paths.launch_paths.summaries[index(data.aws_servicecatalog_launch_paths.launch_paths.summaries[*].name, \"AWS Control Tower Account Factory Portfolio\")].path_id}",
+        "product_id": "${data.aws_servicecatalog_product.sc_product.id}",
+        "provisioning_artifact_id": "${data.aws_servicecatalog_provisioning_artifacts.sc_product_artifacts.provisioning_artifact_details[index(data.aws_servicecatalog_provisioning_artifacts.sc_product_artifacts.provisioning_artifact_details[*].active, true)].id}",
+        "provisioning_parameters": [
+          {
+            "key": "AccountName",
+            "value": "Demo-Account"
+          },
+          {
+            "key": "AccountEmail",
+            "value": "demo-account@example.com"
+          },
+          {
+            "key": "ManagedOrganizationalUnit",
+            "value": "Demo-OU (${data.terraform_remote_state.cross-stack-reference-input-org_mgmt.outputs.cross-stack-output-aws_organizations_organizational_unitouid})"
+          },
+          {
+            "key": "SSOUserEmail",
+            "value": "whatever@example.com"
+          },
+          {
+            "key": "SSOUserFirstName",
+            "value": "FirstName"
+          },
+          {
+            "key": "SSOUserLastName",
+            "value": "LastName"
+          }
+        ]
+      }
+    }
+  },
+  "terraform": {
+    "backend": {
+      "local": {
+        "path": "/Users/audunhu/git/controltower-account-factory-for-cdktf/terraform.ct.tfstate"
+      }
+    },
+    "required_providers": {
+      "aws": {
+        "source": "aws",
+        "version": "5.41.0"
+      }
+    }
+  }
+}

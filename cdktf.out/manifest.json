@@ -1,0 +1,25 @@
+{
+  "version": "0.20.4",
+  "stacks": {
+    "org_mgmt": {
+      "name": "org_mgmt",
+      "constructPath": "org_mgmt",
+      "workingDirectory": "stacks/org_mgmt",
+      "synthesizedStackPath": "stacks/org_mgmt/cdk.tf.json",
+      "stackMetadataPath": "stacks/org_mgmt/metadata.json",
+      "annotations": [],
+      "dependencies": []
+    },
+    "ct": {
+      "name": "ct",
+      "constructPath": "ct",
+      "workingDirectory": "stacks/ct",
+      "synthesizedStackPath": "stacks/ct/cdk.tf.json",
+      "stackMetadataPath": "stacks/ct/metadata.json",
+      "annotations": [],
+      "dependencies": [
+        "org_mgmt"
+      ]
+    }
+  }
+}

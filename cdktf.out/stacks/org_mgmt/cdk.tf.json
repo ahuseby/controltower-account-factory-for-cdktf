@@ -1,0 +1,64 @@
+{
+  "//": {
+    "metadata": {
+      "backend": "local",
+      "stackName": "org_mgmt",
+      "version": "0.20.4"
+    },
+    "outputs": {
+      "org_mgmt": {
+        "cross-stack-output-aws_organizations_organizational_unit.ou.id": "cross-stack-output-aws_organizations_organizational_unitouid"
+      }
+    }
+  },
+  "output": {
+    "cross-stack-output-aws_organizations_organizational_unitouid": {
+      "sensitive": true,
+      "value": "${aws_organizations_organizational_unit.ou.id}"
+    }
+  },
+  "provider": {
+    "aws": [
+      {
+      }
+    ]
+  },
+  "resource": {
+    "aws_organizations_organization": {
+      "organization": {
+        "//": {
+          "metadata": {
+            "path": "org_mgmt/organization",
+            "uniqueId": "organization"
+          }
+        },
+        "feature_set": "ALL"
+      }
+    },
+    "aws_organizations_organizational_unit": {
+      "ou": {
+        "//": {
+          "metadata": {
+            "path": "org_mgmt/ou",
+            "uniqueId": "ou"
+          }
+        },
+        "name": "Demo-OU",
+        "parent_id": "${aws_organizations_organization.organization.roots[0].id}"
+      }
+    }
+  },
+  "terraform": {
+    "backend": {
+      "local": {
+        "path": "/Users/audunhu/git/controltower-account-factory-for-cdktf/terraform.org_mgmt.tfstate"
+      }
+    },
+    "required_providers": {
+      "aws": {
+        "source": "aws",
+        "version": "5.41.0"
+      }
+    }
+  }
+}
